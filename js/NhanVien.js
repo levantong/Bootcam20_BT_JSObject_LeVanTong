@@ -10,16 +10,15 @@ function NhanVien(taiKhoan, ten, email, pass, date, luong, chuc, gio){
     this.tongLuong = 0;
     this.loaiNV = ''
 
-    //phương thức
+    //phương thức tính lương và xếp loại nhân viên
     this.tinhLuong = function(){
         var total = '';
         if (this.chucVu == 'Sếp'){
-            total = this.luongCoBan * 3
+            total = new Intl.NumberFormat().format(this.luongCoBan * 3)
         } else if (this.chucVu == 'Trưởng phòng'){
-            total = this.luongCoBan * 2
+            total = new Intl.NumberFormat().format(this.luongCoBan * 2)
         } else if (this.chucVu == 'Nhân viên'){
-            total = this.luongCoBan
-        } else{
+            total = new Intl.NumberFormat().format(this.luongCoBan)
         } 
         return (total)
     }
