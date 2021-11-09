@@ -37,19 +37,44 @@ function layThongTinNV(){
 
     var isValid = true; //isValid: biến thể hiện thõa mãn yêu cầu nhập vào
 
-    isValid &= validation.kt
+    //Ktra số tài khoản: không trống + không trùng
+    isValid &= validation.ktRong(taiKhoan, "Tài khoản nhân viên không được để trống", "tbTKNV") && validation.ktTaiKhoan(taiKhoan, "Tài khoản đã tồn tại!", "tbTKNV", dsnv.mangNV)
+
+    //ktra tên NV: không trống + đúng định dạng (chỉ có chữ, không có số và kt đặc biệt)
+    isValid &= validation.ktRong(ten, "Tên nhân viên không được để trống!", "tbTen") && validation.ktTen(ten, "Vui lòng nhập đúng định dạng tên!", "tbTen")
+
+    //ktra email NV: không trống + đúng định dạng email
+    isValid &= validation.ktRong(email, "Email nhân viên không được để trống!", "tbEmail") && validation.ktEmail(email, "Email sai định dạng!", "tbEmail")
+
+    //ktra pass: không trống + yêu cầu có cả chữ viết hoa, thường, số và ký tự đặc biệt
+    isValid &= validation.ktRong(pass, "Mật khẩu không được để trống!", "tbMatKhau") && validation.ktPass(pass, "Mật khẩu cần có ít nhất 6 ký tự bao gồm cả ký tự thường, in hoa, số và ký tự đặc biệt!", "tbMatKhau")
+
+    //ktra ngày nhập vào
+    isValid &= validation.ktDate(date, "Sai định dạng, vui lòng nhập kiểu: dd/mm/yyyy!", "tbNgay")
+
+    //ktra lương: không trống + đúng định dạng số 
+    isValid &= validation.ktRong(luong, "Mật khẩu không được để trống!", "tbLuongCB") && validation.ktLuong(luong, "Xin vui lòng nhập số", "tbLuongCB")
+
+    //ktra chức vụ (bắt buộc chọn)
+    isValid &= validation.ktChucVu("chucvu", "Xin chọn chức vụ!", "tbChucVu")
+
+    //ktra giờ làm (yêu cầu từ 80-200)-
+    isValid &= validation.ktGioLam(gio, "Số giờ làm từ 80-200!", "tbGiolam" )
 
 
-    var nv = new NhanVien(taiKhoan.trim(), ten, email, pass, date, luong, chuc, Number(gio))
-    nv.tongLuong = nv.tinhLuong();
-    nv.loaiNV = nv.xepLoai()
 
-    dsnv.themNV(nv) //thêm nhân viên vào mảng dsnv
-    console.log(dsnv.mangNV)
-
-    hienTable(dsnv.mangNV)
-    setLocalStorage(dsnv.mangNV); //lưu mảng dsnv vào LocalStorage
-
+    if (isValid) {
+        var nv = new NhanVien(taiKhoan.trim(), ten, email, pass, date, luong, chuc, Number(gio))
+        nv.tongLuong = nv.tinhLuong();
+        nv.loaiNV = nv.xepLoai()
+    
+        dsnv.themNV(nv) //thêm nhân viên vào mảng dsnv
+        console.log(dsnv.mangNV)
+    
+        hienTable(dsnv.mangNV)
+        setLocalStorage(dsnv.mangNV); //lưu mảng dsnv vào LocalStorage
+    } 
+    
 }
 
 get('btnThemNV').onclick = layThongTinNV
@@ -112,7 +137,33 @@ function capNhatNV(){
     var chuc = get("chucvu").value;
     var gio = get("gioLam").value;
 
-    //tạo giá trị nhân viên mới
+    //Ktra yêu cầu đầu vào (Validation)
+    var isValid = true; //isValid: biến thể hiện thõa mãn yêu cầu nhập vào
+
+    //ktra tên NV: không trống + đúng định dạng (chỉ có chữ, không có số và kt đặc biệt)
+    isValid &= validation.ktRong(ten, "Tên nhân viên không được để trống!", "tbTen") && validation.ktTen(ten, "Vui lòng nhập đúng định dạng tên!", "tbTen")
+
+    //ktra email NV: không trống + đúng định dạng email
+    isValid &= validation.ktRong(email, "Email nhân viên không được để trống!", "tbEmail") && validation.ktEmail(email, "Email sai định dạng!", "tbEmail")
+
+    //ktra pass: không trống + yêu cầu có cả chữ viết hoa, thường, số và ký tự đặc biệt
+    isValid &= validation.ktRong(pass, "Mật khẩu không được để trống!", "tbMatKhau") && validation.ktPass(pass, "Mật khẩu cần có ít nhất 6 ký tự bao gồm cả ký tự thường, in hoa, số và ký tự đặc biệt!", "tbMatKhau")
+
+    //ktra ngày nhập vào
+    isValid &= validation.ktDate(date, "Sai định dạng, vui lòng nhập kiểu: dd/mm/yyyy!", "tbNgay")
+
+    //ktra lương: không trống + đúng định dạng số 
+    isValid &= validation.ktRong(luong, "Mật khẩu không được để trống!", "tbLuongCB") && validation.ktLuong(luong, "Xin vui lòng nhập số", "tbLuongCB")
+
+    //ktra chức vụ (bắt buộc chọn)
+    isValid &= validation.ktChucVu("chucvu", "Xin chọn chức vụ!", "tbChucVu")
+
+    //ktra giờ làm (yêu cầu từ 80-200)-
+    isValid &= validation.ktGioLam(gio, "Số giờ làm từ 80-200!", "tbGiolam" )
+
+
+
+    if (isValid) { //nếu thõa tạo giá trị nhân viên mới
     var newNV = new NhanVien(taiKhoan, ten, email, pass, date, luong, chuc, gio)
     //tính lại lương và xếp loại nhân viên nếu có thay đổi
     newNV.tongLuong = newNV.tinhLuong();
@@ -122,5 +173,6 @@ function capNhatNV(){
     //cập nhật thay đổi vào LocalStorage, hiện lại bảng
     setLocalStorage(dsnv.mangNV);
     hienTable(dsnv.mangNV)
+    }
 }
 get("btnCapNhat").onclick = capNhatNV;

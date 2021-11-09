@@ -18,10 +18,10 @@ function Validation() {
     this.ktTaiKhoan = function (value, alert, spanID, mangNV) {
         //Không trùng
         var TKTrung = false;
-        TKTrung = mangNV.some(function (sv) {
-            return value == sv.maSV;
+        TKTrung = mangNV.some(function (nv) {
+            return value == nv.taiKhoan;
         });
-        //có tồn tại mã trùng
+        //Nếu trùng
         if (TKTrung) {
             //Trùng báo lỗi, trả về false
             document.getElementById(spanID).innerHTML = alert;
@@ -36,7 +36,7 @@ function Validation() {
     }
 
 
-    //kiểm tra kiểu tên nhập vào
+    //kiểm tra kiểu tên nhập vào (chỉ có chữ, không có số và kt đặc biệt)
     this.ktTen = function (value, alert, spanID) {
         var pattern = "^[a-zA-Z_ÀÁÂÃÈÉÊẾÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶ" + "ẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ" + "ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹý\\s]+$";
         //Chuyển sang RegExp
@@ -71,8 +71,40 @@ function Validation() {
         }
     }
     //Kiểm tra mật khẩu nhập vào (không giới hạn độ dài, yêu cầu có cả chữ viết hoa, thường, số và ký tự đặc biệt)
-    this.checkPass = function(value, alert, spanID){
-        var pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{0,}$/;
+    this.ktPass = function(value, alert, spanID){
+        var pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,}$/;
+        if (value.match(pattern)) {
+            //hợp lệ trả về true
+            document.getElementById(spanID).innerHTML = "";
+            document.getElementById(spanID).style.display = "none";
+            return true;
+        } else {
+            //Không hợp lệ báo lỗi, trả về false
+            document.getElementById(spanID).innerHTML = alert;
+            document.getElementById(spanID).style.display = "block";
+            return false;
+        }
+    }
+
+    //Kiểm tra ngày nhập vào đề phòng user nhập tay sai định dạng
+    this.ktDate = function(value, alert, spanID){
+        var pattern = /^(0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])[\/\-]\d{4}$/;
+        if (value.match(pattern)) {
+            //hợp lệ trả về true
+            document.getElementById(spanID).innerHTML = "";
+            document.getElementById(spanID).style.display = "none";
+            return true;
+        } else {
+            //Không hợp lệ báo lỗi, trả về false
+            document.getElementById(spanID).innerHTML = alert;
+            document.getElementById(spanID).style.display = "block";
+            return false;
+        }
+    }
+
+    //Kiểm tra lương
+    this.ktLuong = function(value, alert, spanID){
+        var pattern = /^[0-9]+$/;
         if (value.match(pattern)) {
             //hợp lệ trả về true
             document.getElementById(spanID).innerHTML = "";
