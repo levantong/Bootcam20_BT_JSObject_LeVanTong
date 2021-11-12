@@ -176,3 +176,11 @@ function capNhatNV(){
     }
 }
 get("btnCapNhat").onclick = capNhatNV;
+
+function timKiemNV(){
+    var tuKhoa = get("searchName").value;
+    var mangKetQua = dsnv.timkiemNV(tuKhoa);
+    hienTable(mangKetQua);
+}
+get("btnTimNV").onclick = timKiemNV;
+get("searchName").onkeyup = timKiemNV;

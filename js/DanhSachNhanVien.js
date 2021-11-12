@@ -39,3 +39,15 @@ function DanhSachNhanVien(){
     }
 
 }
+
+//lập phương thức tìm kiếm nhân viên theo xếp loại
+DanhSachNhanVien.prototype.timkiemNV = function(tukhoa){
+    var mangKetQua = [];
+    var tuTK = tukhoa.trim().toLowerCase() //=> chuyển từ khóa về chữ thường, loại bỏ khoảng trắng, gán vào biến tuTK
+    this.mangNV.map(function(nv){
+        if(nv.loaiNV.toLowerCase().indexOf(tuTK) > -1){
+            mangKetQua.push(nv)
+        }
+    });
+    return mangKetQua
+}
